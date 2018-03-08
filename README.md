@@ -1,5 +1,7 @@
 # GA-Final-Project
 
+WIREFRAMES to come...
+
 Better formatted doc:  https://docs.google.com/document/d/12rtOuBYyw03o9JfdTYKVIwZtPPJTOQ9s3-OTeXa_mqk/edit?usp=sharing
 
 Proposal:
