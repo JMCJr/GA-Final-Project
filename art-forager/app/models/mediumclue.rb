@@ -1,0 +1,2 @@
+class Mediumclue < ApplicationRecord
+end

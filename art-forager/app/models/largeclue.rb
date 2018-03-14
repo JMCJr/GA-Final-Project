@@ -1,0 +1,2 @@
+class Largeclue < ApplicationRecord
+end

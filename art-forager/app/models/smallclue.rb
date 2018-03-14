@@ -1,0 +1,2 @@
+class Smallclue < ApplicationRecord
+end

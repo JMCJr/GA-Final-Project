@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  forage_level: MyString
+  orgs_code: MyString
+  organizer_id: 
+
+two:
+  forage_level: MyString
+  orgs_code: MyString
+  organizer_id: 

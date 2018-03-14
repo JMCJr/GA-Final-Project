@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clue_text: MyText
+  clue_answer: MyString
+  clue_image_url: MyString
+  clue_gallery: MyString
+  forage_level: MyString
+
+two:
+  clue_text: MyText
+  clue_answer: MyString
+  clue_image_url: MyString
+  clue_gallery: MyString
+  forage_level: MyString
