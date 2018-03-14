@@ -10,7 +10,7 @@ class Cluepage extends Component {
       clueLoaded: false,
       clue: '',
       clueCount: '',
-      riddleAnswer: '',
+      clueAnswer: '',
       clue_answer: ''
     };
     this.getClue = this.getClue.bind(this);
@@ -31,15 +31,15 @@ class Cluepage extends Component {
     });
   }
 
-  Riddle(e) {
-    if (this.state.riddleAnswer === 626){
-    return ("Correct. You will begin your search in Gallery 626.")
-      } else {
-        return ("That is not the answer. Try again.")
-      };
-  };
+  // Riddle(e) {
+  //   if (this.state.riddleAnswer === 626){
+  //   return ("Correct. You will begin your search in Gallery 626.")
+  //     } else {
+  //       return ("That is not the answer. Try again.")
+  //     };
+  // };
 
-  
+
   render() {
     return (
       <div className="App">
@@ -49,9 +49,9 @@ class Cluepage extends Component {
             <label>Answer
             <input
               type="text"
-              name="riddleAnswer"
+              name="clueAnswer"
               onChange={this.handleChange}
-              value={this.state.riddleAnswer}
+              value={this.state.clueAnswer}
             />
           </label>
           <button type="submit" value="submit">Previous Clue</button>

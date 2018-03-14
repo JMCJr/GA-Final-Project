@@ -8,7 +8,8 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
-      forage_submit: ''
+      forage_submit: '',
+      message: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,18 +39,21 @@ export default class Home extends Component {
     console.log('called')
     console.log("The submit: ", this.state.forage_submit)
     let currentCode = this.props.forages.filter(forageWhole => {
-        console.log(forageWhole.orgs_code);
-        return forageWhole.orgs_code === code;
-      });
-      console.log('this is currentCode:', currentCode);
-      // console.log("Match", forageWhole.orgs_code, " and ", this.state.forage_submit);
-  }
+      return forageWhole.orgs_code === code;
+    });
+    if (currentCode.length) {
+      this.props.history.push("/riddle")
+    } else {
+      this.setState({message: 'Invalid CODE, please enter a different CODE'})
+    }
 
+  }
 
   render() {
     return (
       <div>
         <h3>Have A Forager Code? Enter It Here:</h3>
+        <h4>{this.state.message}</h4>
         <form onSubmit={this.handleSubmit}>
           <input
           type="text"

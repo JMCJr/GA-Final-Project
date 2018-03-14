@@ -5,7 +5,8 @@ import Home from './components/Home.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
 import TokenServices from './services/TokenServices.js';
-
+import Riddle from "./components/Forager/Riddle.js";
+import Cluepage from "./components/Forager/Cluepage.js";
 
 class App extends Component {
   constructor(props) {
@@ -100,6 +101,7 @@ getClue(forage_level, id) {
   }
 
   render() {
+    // var riddleThis = this.riddle.bind(this);
     return (
       <div>
         {/* <div>
@@ -113,11 +115,18 @@ getClue(forage_level, id) {
               <Home {...props} forages={this.state.forages} />
             )}/>
             <Route exact path="/register" component={(props) => (
-                <Register {...props} submit={this.register.bind(this)} />
+              <Register {...props} submit={this.register.bind(this)} />
             )} />
           <Route exact path="/login" component={(props) => (
             <Login {...props} submit={this.login.bind(this)} />
           )} />
+          <Route exact path="/riddle" component={(props) => (
+            <Riddle {...props} />
+          )} />
+          <Route exact path="/smallclues/1" component={(props) => (
+            <Cluepage {...props} />
+          )} />
+
           </Switch>
         </BrowserRouter>
       </div>
