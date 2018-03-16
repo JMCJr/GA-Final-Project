@@ -7,20 +7,29 @@ class Cluepage extends Component {
     super(props);
 
     this.state = {
+      forages: [],
+      match: {},
       clueLoaded: false,
       clue: '',
       clueCount: '',
       clueAnswer: '',
       clue_answer: ''
     };
-    this.getClue = this.getClue.bind(this);
+    // this.getClue = this.getClue.bind(this);
+    // this.nextClue = this.nextClue.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // nextClue(e) {
+  //   this.props.getClue("small", 3);
+  // }
+
   handleSubmit(e) {
     e.preventDefault();
-    this.props.submit(this.state);
+    // this.props.submit(this.state);
+    this.props.getClue();
+    this.props.history.push(`/${this.props.forageLevel}clues/${this.props.currentClueId}`);
     console.log(this.state);
   }
 
@@ -31,32 +40,30 @@ class Cluepage extends Component {
     });
   }
 
-  // Riddle(e) {
-  //   if (this.state.riddleAnswer === 626){
-  //   return ("Correct. You will begin your search in Gallery 626.")
-  //     } else {
-  //       return ("That is not the answer. Try again.")
-  //     };
-  // };
-
+componentDidMount() {
+  console.log("match from props: ", this.props);
+}
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Clues will be rendered here for a Forager...</h1>
-          <form onSubmit="">
-            <label>Answer
+          <h1 className="App-title">{this.props.clue_text}</h1>
+          <h2>{this.state.clue}</h2>
+          <form onSubmit={this.handleSubmit}>
+
             <input
               type="text"
+              placeholder="Paste Your Photo URL"
               name="clueAnswer"
               onChange={this.handleChange}
               value={this.state.clueAnswer}
             />
-          </label>
-          <button type="submit" value="submit">Previous Clue</button>
-          <button type="submit" value="submit">Next Clue</button>
-          <button type="submit" value="submit">Finish Forage</button>
+
+          <br />
+          <button onClick={this.props.getClue} type="submit" value="submit">Next Clue</button>
+          <br />
+          <button onClick={this.finishForage} type="submit" value="submit">Finish Forage</button>
           </form>
         </header>
 

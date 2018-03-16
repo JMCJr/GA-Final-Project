@@ -15,7 +15,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className="App">
         <p>Organizer Login</p>
         <LoginForm submit={this.onSubmit} />
         <p><Link to="/"><button>Back Home</button></Link></p>

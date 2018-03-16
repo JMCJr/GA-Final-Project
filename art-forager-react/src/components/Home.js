@@ -11,6 +11,7 @@ export default class Home extends Component {
       forage_submit: '',
       message: ''
     }
+    this.parseCode = this.parseCode.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -27,13 +28,11 @@ export default class Home extends Component {
     });
   }
 
-  // makeMatch(forages) {
-  //     return ();
-  // };
-
   // componentDidMount() {
   //   console.log('this is parsecode:', this.parseCode());
   // }
+
+
 
   parseCode(code) {
     console.log('called')
@@ -41,17 +40,18 @@ export default class Home extends Component {
     let currentCode = this.props.forages.filter(forageWhole => {
       return forageWhole.orgs_code === code;
     });
+    console.log('currentCode: ', currentCode)
+    this.props.persistForageCode(currentCode);
     if (currentCode.length) {
-      this.props.history.push("/riddle")
+      this.props.history.push("/riddle");
     } else {
       this.setState({message: 'Invalid CODE, please enter a different CODE'})
     }
-
   }
 
   render() {
     return (
-      <div>
+      <div className="App">
         <h3>Have A Forager Code? Enter It Here:</h3>
         <h4>{this.state.message}</h4>
         <form onSubmit={this.handleSubmit}>
@@ -64,8 +64,10 @@ export default class Home extends Component {
         </form>
 
         <br />
+        <br />
 
-        <div>Forage the MET for Cultures</div>
+        <div>Organizing An Art Forage?</div>
+        <br />
         <Link to="/register"><button>Register</button></Link>
         <br />
         <Link to="/login"><button>Login</button></Link>

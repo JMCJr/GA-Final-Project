@@ -8,32 +8,134 @@ import TokenServices from './services/TokenServices.js';
 import Riddle from "./components/Forager/Riddle.js";
 import Cluepage from "./components/Forager/Cluepage.js";
 
+const maxCluesId = {
+  small: 18,
+  medium: 26,
+  large: 42
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      forages: []
+      forageMatch: {},
+      forages: [],
+      currentClueId: null,
+      maxCluesId: null,
+      eachClue: '',
+      clue_text: ''
     }
+    this.getClue = this.getClue.bind(this);
     this.getForages = this.getForages.bind(this);
+    this.persistForageCode = this.persistForageCode.bind(this);
+    this.iterateClueId = this.iterateClueId.bind(this);
+    this.levelSetter = this.levelSetter.bind(this);
+    // this.getSmallClue = this.getSmallClue.bind(this);
+    // this.getMediumClue = this.getMediumClue.bind(this);
+    // this.getLargeClue = this.getLargeClue.bind(this);
   }
 
 componentDidMount(){
   this.getForages();
 };
 
-getClue(forage_level, id) {
-  axios({
-    url: `localhost:3000/${forage_level}clues/${id}`,
-    method: "GET"
-  }).then(response => {
-    console.log("Current Clue: ", response.data);
-    this.setState({
-      dataLoaded: true,
-      clue_text: response.data
-    });
+persistForageCode(match) {
+  this.setState({
+    forageMatch: match[0],
+    currentClueId: 1,
+    maxCluesId: maxCluesId[match.forage_level]
   });
+  console.log("this is match in app js: ", match);
 }
+
+levelSetter() {
+  if (this.state.forageMatch.forage_level === "small") {
+    this.setState({
+      maxCluesId: 19
+    })
+  } else if (this.state.forageMatch.forage_level === "medium") {
+      this.setState({
+        maxCluesId: 27
+      })
+  } else if (this.state.forageMatch.forage_level === "large") {
+      this.setState({
+        maxCluesId: 43
+      })
+  };
+}
+
+
+iterateClueId() {
+  this.setState((prevState) => {
+    return {currentClueId: prevState.currentClueId + 1}
+  })
+}
+
+
+getClue()
+ {
+   axios({
+     url: `http://localhost:3000/${this.state.forageMatch.forage_level}clues/${this.state.currentClueId}`,
+     method: "GET"
+   }).then(response => {
+     console.log("Current Clue is: ", response.data.clue_text);
+     this.setState({
+       dataLoaded: true,
+       clue_text: response.data.clue_text
+     });
+   });
+   this.iterateClueId();
+ }
+
+// getSmallClue(id) {
+//   axios({
+//     url: `http://localhost:3000/smallclues/${id}`,
+//     method: "GET"
+//   }).then(response => {
+//     console.log("Current Clue: ", response.data);
+//     this.setState({
+//       dataLoaded: true,
+//       clue_text: response.data.clue_text
+//     });
+//   });
+// }
+//
+// getMediumClue(id) {
+//   axios({
+//     url: `http://localhost:3000/mediumclues/${id}`,
+//     method: "GET"
+//   }).then(response => {
+//     console.log("Current Clue: ", response.data);
+//     this.setState({
+//       dataLoaded: true,
+//       clue_text: response.data
+//     });
+//   });
+// }
+//
+// getLargeClue(id) {
+//   axios({
+//     url: `http://localhost:3000/largeclues/${id}`,
+//     method: "GET"
+//   }).then(response => {
+//     console.log("Current Clue: ", response.data);
+//     this.setState({
+//       dataLoaded: true,
+//       clue_text: response.data
+//     });
+//   });
+// }
+
+newAnswer(newAnswer) {
+    axios({
+      url: "http://localhost:3000/answers",
+      method: "POST",
+      data: newAnswer
+    }).then(res => {
+      this.getAnswers(this.state.user.id);
+    });
+  }
 
   register(data) {
     axios('http://localhost:3000/organizers/', {
@@ -52,7 +154,7 @@ getClue(forage_level, id) {
     method:"GET",
     data
   }).then(resp => {
-    console.log("this is the forage responeses", resp);
+    console.log("this are the forage responses", resp);
     this.setState({
       forages: resp.data
     });
@@ -112,20 +214,30 @@ getClue(forage_level, id) {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={(props) => (
-              <Home {...props} forages={this.state.forages} />
-            )}/>
+                <Home {...props} forages={this.state.forages} persistForageCode={this.persistForageCode} />
+              )}/>
             <Route exact path="/register" component={(props) => (
-              <Register {...props} submit={this.register.bind(this)} />
+                <Register {...props} submit={this.register.bind(this)} />
+              )} />
+            <Route exact path="/login" component={(props) => (
+              <Login {...props} submit={this.login.bind(this)} />
             )} />
-          <Route exact path="/login" component={(props) => (
-            <Login {...props} submit={this.login.bind(this)} />
-          )} />
-          <Route exact path="/riddle" component={(props) => (
-            <Riddle {...props} />
-          )} />
-          <Route exact path="/smallclues/1" component={(props) => (
-            <Cluepage {...props} />
-          )} />
+            <Route exact path="/riddle" component={(props) => (
+              <Riddle {...props} getClue={this.getClue} match={this.state.match}
+                                 forageLevel={this.state.forageMatch.forage_level}
+                                 currentClueId={this.state.currentClueId}
+                                 levelSetter={this.levelSetter}
+                />
+            )} />
+            <Route exact path="/smallclues/:id" component={(props) => (
+              <Cluepage {...props} forageMatch={this.state.match} clue_text={this.state.clue_text} getClue={this.getClue}/>
+            )} />
+            <Route exact path="/mediumclues/:id" component={(props) => (
+              <Cluepage {...props} forageMatch={this.state.match} clue_text={this.state.clue_text} getClue={this.getClue} />
+            )} />
+            <Route exact path="/largeclues/:id" component={(props) => (
+              <Cluepage {...props} forageMatch={this.state.match} clue_text={this.state.clue_text} getClue={this.getClue} />
+            )} />
 
           </Switch>
         </BrowserRouter>

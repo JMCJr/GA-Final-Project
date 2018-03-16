@@ -14,7 +14,7 @@ export default class Register extends Component {
 
   render() {
     return (
-      <div>
+      <div className="App">
         I'm a register
         <LoginForm submit={this.onSubmit} />
         <p><Link to="/"><button>Back Home</button></Link></p>
